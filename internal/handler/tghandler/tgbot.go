@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 	"sweetbot/conf/config"
 	"sweetbot/internal/handler/openai"
 
@@ -57,7 +58,7 @@ func (th *TelegramHandler) handleUpdate(update tgbotapi.Update) {
 		answer = "抱歉，我無法回答"
 	}
 
-	if answer == "你應該去找其他人" {
+	if strings.Contains(answer, "你應該去找其他人") {
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, answer)
 		th.Bot.Send(msg)
 		return
