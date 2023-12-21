@@ -22,25 +22,25 @@ func AskGPT(question string) (string, error) {
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
-			MaxTokens: 1024,
+			Model:       openai.GPT3Dot5Turbo,
+			MaxTokens:   1024,
 			Temperature: 0.75,
-			TopP: 0.8,
+			TopP:        0.8,
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleSystem,
-					Content: "當被問到關於一種甜點的問題，請根據以下範例提供該甜點的一個簡單食譜或製作方法。如果問題是關於一種具體甜點的詳細製作方法，比如 '巧克力蛋糕的製作方法'，請給出詳細的步驟和所需材料。如果問題與甜點無關，請回答 '你應該去找其他人'。"
+					Content: "當被問到關於一種甜點的問題，請根據以下範例提供該甜點的一個簡單食譜或製作方法。如果問題是關於一種具體甜點的詳細製作方法，比如 '巧克力蛋糕的製作方法'，請給出詳細的步驟和所需材料。如果問題與甜點無關，請回答 '你應該去找其他人'。",
 				},
 				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: fmt.Sprintf("%s", question)
+					Content: fmt.Sprintf("%s", question),
 				},
 				{
 					Role:    openai.ChatMessageRoleAssistant,
-					Content: fmt.Sprintf("例子 1：%s\n\n例子 2：%s\n\n現在根據用戶的問題，請提供相關的甜點食譜。", example1, example2)
+					Content: fmt.Sprintf("例子 1：%s\n\n例子 2：%s\n\n現在根據用戶的問題，請提供相關的甜點食譜。", example1, example2),
 				},
 			},
-		}
+		},
 	)
 
 	if err != nil {
