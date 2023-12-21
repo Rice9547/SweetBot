@@ -9,9 +9,11 @@ import (
 )
 
 type Config struct {
+	BaseURL              string `yaml:"base_url" env:"BASE_URL"`
 	OpenAIKey            string `yaml:"openai_key" env:"OPENAI_API_KEY"`
 	LineBotChannelSecret string `yaml:"line_bot_channel_secret" env:"LINE_BOT_CHANNEL_SECRET"`
 	LineBotChannelToken  string `yaml:"line_bot_channel_token" env:"LINE_BOT_CHANNEL_TOKEN"`
+	TGBotToken           string `yaml:"tg_bot_token" env:"TG_BOT_TOKEN"`
 }
 
 var Conf Config

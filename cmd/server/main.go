@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"sweetbot/conf/config"
 	"sweetbot/internal/handler"
+	tghandler "sweetbot/internal/handler/tghandler"
 )
 
 func loadConfig(relativePath string) error {
@@ -26,7 +27,14 @@ func loadConfig(relativePath string) error {
 func main() {
 	loadConfig("conf/env.yaml")
 
+	webhookURL := config.Conf.BaseURL
+	telegramHandler, err := tghandler.NewTelegramHandler(fmt.Sprintf("%s/webhook/tg", webhookURL))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	http.HandleFunc("/webhook", handler.LineBotHandler)
+	http.HandleFunc("/webhook/tg", telegramHandler.HandleUpdates)
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal("Failed to start server: ", err)
