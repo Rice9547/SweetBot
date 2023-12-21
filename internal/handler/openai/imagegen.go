@@ -15,7 +15,8 @@ func GenerateImage(question string) (string, error) {
 		context.Background(),
 		openai.ImageRequest{
 			Prompt:         fmt.Sprintf("%s的成品", question),
-			Size:           openai.CreateImageSize256x256,
+			Model:          openai.CreateImageModelDallE3,
+			Size:           openai.CreateImageSize1792x1024,
 			ResponseFormat: openai.CreateImageResponseFormatURL,
 			N:              1,
 		},
