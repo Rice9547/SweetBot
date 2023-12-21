@@ -45,11 +45,11 @@ func LineBotHandler(w http.ResponseWriter, r *http.Request) {
 					answer = "抱歉，我無法回答"
 				}
 
-				if answer == "你應該去找其他人" {
+				if answer == "你應該去找其他人。" {
 					if _, err = bot.ReplyMessage(event.ReplyToken, answerMessage).Do(); err != nil {
 						log.Print(err)
 					}
-					break
+					continue
 				}
 
 				imgResultChan := make(chan string)
