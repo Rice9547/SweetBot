@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"sweetbot/conf/config"
 	"sweetbot/internal/handler/openai"
+	"time"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -65,7 +68,12 @@ func LineBotHandler(w http.ResponseWriter, r *http.Request) {
 
 				imgURL := <-imgResultChan
 				if imgURL != "" {
-					imgMessage := linebot.NewImageMessage(imgURL, imgURL)
+					defer func() {
+						time.Sleep(time.Second * 20)
+						os.Remove(imgURL)
+					}()
+					fullImageURL := fmt.Sprintf("%s/%s", config.Conf.BaseURL, imgURL)
+					imgMessage := linebot.NewImageMessage(fullImageURL, fullImageURL)
 					txtMessage := linebot.NewTextMessage("這是一張可能的成品圖片")
 					if _, err = bot.ReplyMessage(event.ReplyToken, answerMessage, imgMessage, txtMessage).Do(); err != nil {
 						log.Printf("send image failed with err: %v", err)

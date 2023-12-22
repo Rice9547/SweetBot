@@ -33,6 +33,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	fs := http.FileServer(http.Dir("./images"))
+	http.Handle("/images/", http.StripPrefix("/images/", fs))
+
 	http.HandleFunc("/webhook", handler.LineBotHandler)
 	http.HandleFunc("/webhook/tg", telegramHandler.HandleUpdates)
 

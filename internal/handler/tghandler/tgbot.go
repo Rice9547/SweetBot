@@ -2,11 +2,14 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"sweetbot/conf/config"
 	"sweetbot/internal/handler/openai"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -77,9 +80,14 @@ func (th *TelegramHandler) handleUpdate(update tgbotapi.Update) {
 
 	imgURL := <-imgResultChan
 	if imgURL != "" {
+		defer func() {
+			time.Sleep(time.Second * 20)
+			os.Remove(imgURL)
+		}()
+		fullImageURL := fmt.Sprintf("%s/%s", config.Conf.BaseURL, imgURL)
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, answer)
 		th.Bot.Send(msg)
-		photoMsg := tgbotapi.NewPhoto(update.Message.Chat.ID, tgbotapi.FileURL(imgURL))
+		photoMsg := tgbotapi.NewPhoto(update.Message.Chat.ID, tgbotapi.FileURL(fullImageURL))
 		th.Bot.Send(photoMsg)
 		txtMsg := tgbotapi.NewMessage(update.Message.Chat.ID, "這是一張可能的成品圖片")
 		th.Bot.Send(txtMsg)
