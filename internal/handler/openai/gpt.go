@@ -22,7 +22,7 @@ func AskGPT(question string) (string, error) {
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
-			Model:       openai.GPT3Dot5Turbo,
+			Model:       openai.GPT4,
 			MaxTokens:   1024,
 			Temperature: 0.75,
 			TopP:        0.8,
